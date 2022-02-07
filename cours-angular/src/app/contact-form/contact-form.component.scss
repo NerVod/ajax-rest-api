@@ -1,0 +1,19 @@
+div {
+    border: 2px dotted red;
+    padding: 0.5rem;
+    margin: 1rem
+}
+
+form.ng-valid {
+    background-color: greenyellow;
+}
+form.ng-invalid {
+    background-color: rgb(233, 148, 148);
+}
+
+input.ng-valid {
+    border: 2px solid darkgreen
+}
+input.ng-invalid {
+    border: 6px solid orange
+}

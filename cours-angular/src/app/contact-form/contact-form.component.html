@@ -1,0 +1,45 @@
+
+<div>
+    <h2>Contact form</h2>
+<p>Compteur : {{ compteur }} ou {{ this.compteur }} (this.compteur)</p>
+<button type="button" (click)="plus()">Incrémenter</button>
+
+<h2>Valeurs de la calsse</h2>
+<p>Prénom :{{ utilisateur.prenom }}</p>
+<p>Nom : {{ utilisateur.nom }}</p>
+
+<h2>Etats du formulaire :</h2>
+<p>untouched / touched => Interaction utilisateur avec un champ </p>
+<p>pristine / dirty => les données d'au moin un champ on été modifiées</p>
+<p>valid/invalid => etat de validité gobale ou d'un champs </p>
+
+
+<h2>Etats du formulaire avec (NgForm)</h2>
+<p>mon formulaire.dirty :{{ monFormulaire.dirty }}</p>
+<p>mon formulaire.valid :{{ monFormulaire.valid }}</p>
+<p>mon formulaire.touched :{{ monFormulaire.touched }}</p>
+<p>monFormulaire.value.prenom :{{ monFormulaire.value.prenom }}</p>
+
+
+<form #monFormulaire="ngForm" (ngSubmit)="SoumettreFormulaire(monFormulaire)">
+    <!-- <input type="text" name="prenom" (input)="majPrenom(champPrenom)" [value]="utilisateur.prenom" #champPrenom> -->
+    <!-- Ou plus simplement avec [(ngModel)] -->
+    <input type="text" name="prenom" [(ngModel)]="utilisateur.prenom" required minlength="4" #champPrenom="ngModel" autocomplete="off">
+    <p *ngIf="champPrenom.errors?.['required']">Vous devez remplir le champs prénom</p>
+    <p *ngIf="champPrenom.errors?.['minLength']">Le prénom doit faire au moins 5 caractères</p>
+
+    <p>champPrenom.valid : {{ champPrenom.valid }}</p>
+    <p>champPrenom.errors?.['required'] : {{ champPrenom.errors?.['required'] }}</p>
+    <p>champPrenom.errors?.['minLength'] : {{ champPrenom.errors?.['minLength'] }}</p>
+
+
+    <input type="text" name="nom"  [(ngModel)]="utilisateur.nom">
+
+    <input type="date" name="date">
+
+    <input type="email" name="email" email [(ngModel)]="utilisateur.email" >
+    <input type="submit" value="Envoyer" [disabled]="monFormulaire.invalid">
+</form>
+
+
+</div>

@@ -1,0 +1,13 @@
+<button type="button" (click)="basculerAffichage()">Basculer</button>
+
+<p>La valeur de afficher est {{ afficher }}</p>
+
+<div *ngIf="afficher">DIV ... </div>
+
+<ng-container *ngFor="let comp of nbElements">
+    <app-contact-form *ngIf="afficher"></app-contact-form>
+</ng-container>
+
+<!-- <app-contact-form *ngIf="afficher"></app-contact-form>
+
+<app-contact-form *ngIf="afficher"></app-contact-form> -->

@@ -1,0 +1,12 @@
+.catalogue {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.catalogue div {
+    border-radius: 4px;
+    box-shadow: 3px 3px 12px rgb(10, 68, 160);
+    padding: 1.5rem
+
+}

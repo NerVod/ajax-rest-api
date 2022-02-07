@@ -1,0 +1,54 @@
+<p>Je m'appelle {{ nom }}</p>
+<p>{{ 'Mon nom est '+ nom}}</p>
+<p>La somme de 2 + 2 calculée dans le template Angular : {{ 2 + 2 }}</p>
+<p>Le produit de 2 * 3 calculé dans le template Angular : {{ 2 * 3 }}</p>
+<p>{{ 2 + 3 * 5 }}</p>
+<ul>
+    <li>{{ eleves[0] }}</li>
+    <li>{{ eleves[1] }}</li>
+    <li>{{ eleves[2] }}</li>
+    <li>{{ eleves[3] }}</li>
+    <li>{{ eleves[4] }}</li>
+</ul>
+
+<p>Encore le RandomNumber : {{ nombre }}</p>
+
+<p>{{ hydrogene.nom }}, {{ hydrogene.numero}}</p>
+
+<p>{{ elements[0].nom}},{{ elements[0].numero }}</p>
+<p>{{ elements[1].nom}},{{ elements[1].numero }}</p>
+<p>{{ elements[2].nom}},{{ elements[2].numero }}</p>
+
+<p [attr.style]="'background-color: deeppink'" *ngIf="affichePara1">Un premier paragraphe dynamique  ...</p>
+
+<p>{{ 3 > 2 }}</p>
+<p>{{ 3 % 2 }}</p>
+<!-- <p>{{ 3 === 2 }}</p> -->
+<p>trois est égal à deux : {{ trois === deux }}</p>
+<p>true ou false : {{ true || false }}</p>
+
+<p [attr.style]="'background-color: deeppink'" *ngIf="affichePara2">Un second paragraphe dynamique ...</p>
+
+<h3>Avec *ngFor</h3>
+<ul data-monAttribut_CUSTOM= "Valeur CUSTOM">
+    <li *ngFor="let eleve of eleves">{{ eleve }}</li>
+</ul>
+
+
+<p [attr.style]="'color:blue'">Un paragraphe bleu</p>
+
+<p style ='color:red'>Un paragraphe rouge</p>
+
+
+<input [disabled]="etatDeMonChamps" type ="text" value="Hello World">
+<button type="button" (click)="desactiverChamps()">Désactiver le champs</button>
+<h2 (mouseover)="activerChamps()">Survoler pour réactiver le champs</h2>
+
+<div (mouseenter)="message('Vous êtes entrés')" (mouseleave)="message('Vous êtes sortis de la div')">Survoler pour afficher un message dans la console</div>
+
+<p>Un costume de chien</p>
+<img [src]="costumeDeChien" width="200">
+
+<h3>Liste de costumes</h3>
+<img *ngFor="let image of images" [src]="image" width="200">
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact</title>
+</head>
+<body>
+  <h1>Inscription</h1>
+  <br>
+  <hr>
+  <br>
+  <form action="/register" method="POST">
+    <label for="firstName">Prénom : </label>
+    <input type="text" id="firstName" name="firstName">
+    <label for="lastName">Nom : </label>
+    <input type="text" id="lastName" name="lastName">
+    <label for="email">E-mail</label>
+    <input type="email" id="email" name="email">
+    <label for="password">Mot de passe : </label>
+    <input type="password" id="password" name="password">
+    <button type="submit">Envoyer</button>
+  </form>
+  <br>
+  <hr>
+  <br>
+  <button type="button" id="fetchSomething">Fetch something</button>
+  <p id="displayInfo"></p>
+  <script src="/js/fetchData.js"></script>
+</body>
+</html>

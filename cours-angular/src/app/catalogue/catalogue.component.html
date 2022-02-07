@@ -1,0 +1,16 @@
+<h2>Catalogue</h2>
+
+<h3>Test du composant card</h3>
+
+<div class="catalogue"> 
+<app-card *ngFor="let product of produits" [titre]="product.nom" [image]="product.image"></app-card>
+</div>
+
+<app-ajout-produit></app-ajout-produit>
+
+<!-- <div class="catalogue"> 
+    <div *ngFor="let product of produits, let i = index;" routerLink="/product/{{i}}">
+        <h3>{{ product.nom }} (indice : {{ i }})</h3>
+        <img [src]="product.image" width="150">
+    </div>
+</div> -->
