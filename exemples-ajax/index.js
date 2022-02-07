@@ -3,6 +3,8 @@ import cors from "cors";
 import { fileURLToPath, URL, URLSearchParams } from "url";
 import path from "path";
 import { MongoClient } from "mongodb";
+import got from 'got';
+import ky from 'ky';
 
 const url =
   "mongodb+srv://NerVod:MotDePasseMongo@cluster0.aykvr.mongodb.net/bddAjax?retryWrites=true&w=majority";
@@ -12,6 +14,29 @@ const coll = "users";
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+app.get('/ky', async (req, res, next) => {
+    console.log('Route ky appelée')
+
+    let response ;
+
+    try {
+        response = await ky.post('https://example.com', {
+        json: {
+            message: 'appel sur API KY'
+        }
+        }).json;
+    } catch (error) {
+            console.log('erreur route ky : ', error)
+    }        
+
+    console.log('donnes ky : ', response.json)
+    const jsonDonnees = response.json;
+    console.log(jsonDonnees)
+
+});
+
 
 app.use(cors());
 app.use(express.json());
@@ -34,12 +59,27 @@ app.get("/", (req, res, next) => {
   );
 });
 
-app.get("/api", (req, res) => {
+app.get("/api", async (req, res, next) => {
   console.log("route api called");
-  res.json({
-    message: "Requête bien reçue",
-  });
+  let result;
+
+  try {
+      result = await got.post('https://httpbin.org/anything', {
+          json: {
+              message: 'Appel API résussi via mon serveur !'
+          }
+      }).json();
+     
+  } catch (error) {
+      next(error);
+  }
+  console.log('data :', result.json);
+  const jsonData = result.json;
+  res.json(jsonData)
 });
+
+
+
 
 app.post("/register", (req, res) => {
   console.log("Corps de la requête : ", req.body);
