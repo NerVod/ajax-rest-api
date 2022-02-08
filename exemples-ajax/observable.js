@@ -1,4 +1,4 @@
-import { Observable, of, map, count, filter } from 'rxjs';
+import { Observable, of, map, count, filter, catchError } from 'rxjs';
 
 const myObservable = new Observable(subscriber => {
     setTimeout(() => {
@@ -39,7 +39,10 @@ const ofObservable = of(1, 2, 2.1, 2.8, 3.5, 3.9, 4, 10, 11, 0.5, 0.36).pipe(
     filter((value) => {
         return value < 6;
     }),
-    count()
+    count(),
+    catchError(err => {
+        console.log(err)
+    })
     )
 
     // let datas = [];

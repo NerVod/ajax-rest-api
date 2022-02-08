@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormService } from '../form.service';
+
 
               interface monTest {
                 a: string,
                 b: number,
                 [key: string]: any
+}
+
+interface Message {
+  message: string,
 }
 
 
@@ -14,23 +21,66 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit {
+  message?: string = '';
   intervalId?: number;
   compteur = 0;
   utilisateur = {
     nom:'Skywalker',
     prenom:'Luke',
+    favouriteJedi: 'Obi-Wan Kenobi',
     email:'maytheforce@jedi.holonet'
   }
 
-  constructor() { 
-            const varTest: monTest ={
-              a: 'test',
-              b: 42,
-              nimporte: '',
-              quoi:'',
-            }
-
+  constructor(
+    public form: FormService,
+    public router: Router
+    ) { 
+    const varTest: monTest ={
+      a: 'test',
+      b: 42,
+      nimporte: '',
+      quoi:'',
+    };
   }
+
+  displaySomething() {
+    this.form.fetchData().subscribe( {
+      next: (value) => {
+        const myMessage: Message = value as Message;
+        this.message = myMessage.message;
+      },
+      error: (error) => {
+        this.message = error;
+      },
+      complete() {
+        console.log('travail terminé ..')
+      }
+    })
+  }
+
+
+  SoumettreFormulaire(monForm: NgForm) {
+    console.log('Tentative d\'envoi du formulaire', monForm);
+
+    if(monForm.valid) {
+      console.log('Envoi des données au serveur ...');
+      try {
+        this.form.submitForm(monForm).subscribe(result => {
+          console.log('result :', result);
+          const serverMessage: Message = result as Message;
+          this.message = serverMessage.message;
+
+          setTimeout(() => {
+            this.router.navigateByUrl('/');
+          }, 2000);
+      })
+      } catch (error) {
+        console.log('Erreur à l\'envoi du formulaire: ', error)
+      }
+    }
+  }
+
+
 
   ngOnInit(): void {
     console.log('OnInit ...');
@@ -55,13 +105,7 @@ export class ContactFormComponent implements OnInit {
   //   this.utilisateur.prenom= inputNom.value
   // }
   
-  SoumettreFormulaire(monForm: NgForm): void {
-    console.log('Tentative d\'envoi du formulaire');
-
-    if(monForm.valid) {
-      console.log('Envoi des données au serveur ...')
-    }
-  };
+  
 
   
 

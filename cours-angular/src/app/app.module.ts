@@ -15,6 +15,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ProduitComponent } from './produit/produit.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CardComponent } from './ui/card/card.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -36,6 +37,8 @@ import { CardComponent } from './ui/card/card.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
+    HttpClientModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

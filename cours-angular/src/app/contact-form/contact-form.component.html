@@ -24,7 +24,7 @@
 <form #monFormulaire="ngForm" (ngSubmit)="SoumettreFormulaire(monFormulaire)">
     <!-- <input type="text" name="prenom" (input)="majPrenom(champPrenom)" [value]="utilisateur.prenom" #champPrenom> -->
     <!-- Ou plus simplement avec [(ngModel)] -->
-    <input type="text" name="prenom" [(ngModel)]="utilisateur.prenom" required minlength="4" #champPrenom="ngModel" autocomplete="off">
+    <input type="text" name="firstName" [(ngModel)]="utilisateur.prenom" required minlength="4" #champPrenom="ngModel" autocomplete="off">
     <p *ngIf="champPrenom.errors?.['required']">Vous devez remplir le champs prénom</p>
     <p *ngIf="champPrenom.errors?.['minLength']">Le prénom doit faire au moins 5 caractères</p>
 
@@ -33,13 +33,18 @@
     <p>champPrenom.errors?.['minLength'] : {{ champPrenom.errors?.['minLength'] }}</p>
 
 
-    <input type="text" name="nom"  [(ngModel)]="utilisateur.nom">
+    <input type="text" name="lastName"  [(ngModel)]="utilisateur.nom">
+
+    <input type="text" name="favouriteJedi"  [(ngModel)]="utilisateur.favouriteJedi">
 
     <input type="date" name="date">
 
     <input type="email" name="email" email [(ngModel)]="utilisateur.email" >
     <input type="submit" value="Envoyer" [disabled]="monFormulaire.invalid">
 </form>
+
+<button type="button" (click)="displaySomething()">Fetch Something</button>
+<p>{{ message }}</p>
 
 
 </div>

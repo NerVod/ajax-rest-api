@@ -5,6 +5,22 @@ import path from "path";
 import { MongoClient } from "mongodb";
 import got from 'got';
 import ky from 'ky';
+import jwt from 'jsonwebtoken'
+
+import { encrypt } from "./user.js";
+
+
+
+///////// test password
+
+const passwordTest = encrypt("framboise")
+console.log('framboise :',passwordTest)
+
+const password2 = encrypt('framboise')
+console.log('password2 : ',password2)
+///////// fin test password
+
+
 
 const url =
   "mongodb+srv://NerVod:MotDePasseMongo@cluster0.aykvr.mongodb.net/bddAjax?retryWrites=true&w=majority";
@@ -14,6 +30,11 @@ const coll = "users";
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const config = {
+  port: process.env.PORT || 8010,
+  host: process.env.HOST || '127.0.0.1'
+}
 
 
 app.get('/ky', async (req, res, next) => {
@@ -66,7 +87,7 @@ app.get("/api", async (req, res, next) => {
   try {
       result = await got.post('https://httpbin.org/anything', {
           json: {
-              message: 'Appel API résussi via mon serveur !'
+              message: `Appel API n°${Math.ceil(Math.random()*100)} résussi via mon serveur !`
           }
       }).json();
      
@@ -78,14 +99,19 @@ app.get("/api", async (req, res, next) => {
   res.json(jsonData)
 });
 
-
-
-
+ 
+  // commenté pour exo Angular
 app.post("/register", (req, res) => {
+  console.log('Route /register inbvoquée');
   console.log("Corps de la requête : ", req.body);
   const first = req.body.firstName;
   const last = req.body.lastName;
   const emailSaisi = req.body.email;
+  const favouriteJedi = req.body.favouriteJedi;
+  const password = encrypt(body.password)
+  // const corpsRequete = req.body;
+  // const firstName = corps.Requete.prenom;
+  // const lastName = corps.Requete.nom;
 
   res.send(
     `Données du formulaire bien reçues ! Bienvenue sur le site ${first} ${last} !`
@@ -108,6 +134,7 @@ app.post("/register", (req, res) => {
             {
               prenom: first,
               nom: last,
+              favouriteJedi: favouriteJedi,
               email: emailSaisi,
             },
             (err, document) => {
@@ -129,11 +156,116 @@ app.post("/register", (req, res) => {
   });
 });
 
+
+
+
+// gestion des routes d'erreurs
+
+app.route('*')
+  .get((req, res, next) => {
+    res.status(404).sendFile(
+      'error404.html',
+      {
+        root: __dirname,
+      },
+      (err)=> {
+        if(err) {
+          next(err);
+        }
+      }
+    );
+  })
+  .post((req, res)=> {
+    res.status(403).json({
+      error: 'Requête interdite sur cette route !'
+    })
+  })
+  .all((req, res) => {
+    res.status(403).json({
+      error: 'Requête avec méthode autre que GET ou POST'
+    })
+  })
+
+
+
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send("something broke !");
+  res.status(req.statusCode).send("something broke !");
 });
 
-app.listen(8010, "127.0.0.1", () => {
+
+
+app.listen(config.port, config.host, () => {
   console.log(`Serveur écoute port 8010`);
 });
+
+
+/*
+import crypto from "crypto";
+
+const algorithm = "aes-256-cbc";
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
+
+function encrypt(text) {
+  let cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(key), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return { iv: iv.toString("hex"), encryptedData: encrypted.toString("hex") };
+}
+
+function decrypt(text) {
+  let iv = Buffer.from(text.iv, "hex");
+  let encryptedText = Buffer.from(text.encryptedData, "hex");
+  let decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(key), iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
+
+var hw = encrypt("fraise des bois");
+console.log(hw);
+console.log(decrypt(hw));
+*/
+
+
+
+
+
+
+/*   
+import bcrypt from "bcrypt";
+const saltRounds = 10;
+const myPlaintextPassword = "s0//P4$$w0rD";
+const someOtherPlaintextPassword = "not_bacon";
+const salt = bcrypt.genSaltSync(saltRounds);
+const hash = bcrypt.hashSync(myPlaintextPassword, salt);
+const hash2 = bcrypt.hashSync(myPlaintextPassword, saltRounds);
+console.log("salt", salt);
+console.log("hash", hash);
+console.log("hash2", hash2);
+
+const hashPassword = bcrypt.hashSync(password, saltRounds);
+            console.log(
+              "🚀 ~ file: index.js ~ line 129 ~ db.collection ~ hashPassword",
+              hashPassword
+            );
+            insertUser(firstName, lastName, hashPassword, email);
+*/
+
+
+
+/////////////////////////
+
+/*
+Doc Angular pour requêtes POST avec httpClient : https://angular.io/guide/http#making-a-post-request
+
+Doc intéressante concernant ExpressJS : https://www.tutorialspoint.com/expressjs/expressjs_middleware.htm
+
+Doc intéressante sur les différentes entre les architectures d'application REST et SOAP : https://www.redhat.com/fr/topics/integration/whats-the-difference-between-soap-rest
+
+Lien liveshare: https://prod.liveshare.vsengsaas.visualstudio.com/join?C0EE9BD304D4A1F989F97DA7F8EACE5536B7
+
+JWT explanations : https://jwt.io/introduction
+*/
